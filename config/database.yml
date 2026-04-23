@@ -1,0 +1,23 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("DB_USERNAME", "root") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "root") %>
+  host:     <%= ENV.fetch("DB_HOST", "127.0.0.1") %>
+  port:     <%= ENV.fetch("DB_PORT", "3306").to_i %>
+
+development:
+  <<: *default
+  database: food_queue_development
+
+test:
+  <<: *default
+  database: food_queue_test
+
+production:
+  <<: *default
+  database: <%= ENV["DB_NAME"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  host:     <%= ENV["DB_HOST"] %>
