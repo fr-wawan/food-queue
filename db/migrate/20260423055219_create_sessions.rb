@@ -4,6 +4,7 @@ class CreateSessions < ActiveRecord::Migration[8.1]
       t.references :user, null: false, foreign_key: true
       t.string :jti, null: false
       t.datetime :expires_at, null: false
+      t.string :token_digest
       t.string :user_agent
       t.string :ip_address
 
