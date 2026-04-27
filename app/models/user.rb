@@ -9,6 +9,6 @@ class User < ApplicationRecord
   enum :role, { owner: 0, staff: 1, cashier: 2 }
   validates :name, presence: true
   validates :email, presence: true,
-    uniqueness: { scope: restaurant_id },
+    uniqueness: { scope: :restaurant_id },
     format: { with: URI::MailTo::EMAIL_REGEXP }
 end

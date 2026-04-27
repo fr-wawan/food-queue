@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :user do
-    restaurant { nil }
-    name { "MyString" }
-    email { "MyString" }
-    password_digest { "MyString" }
-    role { 1 }
+    association :restaurant
+    name { Faker::Name.name }
+    email { Faker::Internet.unique.email }
+    password { 'password123' }
+    role { :staff }
   end
 end

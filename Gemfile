@@ -1,12 +1,12 @@
 source "https://rubygems.org"
 
-gem "dotenv-rails", "~> 3.2", groups: [ :development, :test ]
+gem "dotenv-rails", "~> 3.2", groups: %i[development test]
 
-gem "rails", "~> 8.1.3"
+gem "bootsnap", require: false
 gem "mysql2", "~> 0.5"
 gem "puma", ">= 5.0"
+gem "rails", "~> 8.1.3"
 gem "tzinfo-data", platforms: %i[windows jruby]
-gem "bootsnap", require: false
 
 # Auth
 gem "bcrypt", "~> 3.1.7"
@@ -31,12 +31,12 @@ gem "pundit"
 gem "sidekiq"
 
 group :development, :test do
-  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "brakeman", require: false
-  gem "rubocop-rails-omakase", require: false
-  gem "rspec-rails"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "factory_bot_rails"
   gem "faker"
+  gem "rspec-rails"
+  gem "rubocop-rails-omakase", require: false
   gem "shoulda-matchers"
 end
 
