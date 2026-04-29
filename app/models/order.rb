@@ -22,6 +22,6 @@ class Order < ApplicationRecord
   private
 
   def generate_order_number
-    self.order_number ||= "ORD-A#{Time.current.strftime('%Y%m%d')}-#{SecureRandom.hex(4).upcase}"
+    self.order_number ||= "ORD-#{Time.current.strftime('%Y%m%d')}-#{SecureRandom.hex(4).upcase}"
   end
 end
