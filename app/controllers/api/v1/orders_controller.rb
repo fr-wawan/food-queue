@@ -22,6 +22,8 @@ class Api::V1::OrdersController < ApplicationController
       @order.update!(total_price: calculate_total)
     end
 
+    NotifyOrderJob.perform_later(@order.id)
+
     render json: OrderBlueprint.render(@order, view: :with_items), status: :created
 
   rescue ActiveRecord::RecordInvalid => e

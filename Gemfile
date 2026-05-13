@@ -32,6 +32,9 @@ gem "pundit"
 # Background jobs
 gem "sidekiq"
 
+# Redis
+gem "redis"
+
 group :development, :test do
   gem "brakeman", require: false
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"

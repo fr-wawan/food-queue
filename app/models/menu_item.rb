@@ -3,7 +3,8 @@ class MenuItem < ApplicationRecord
   belongs_to :restaurant
   belongs_to :menu
 
-  searchkick word_middle: [ :name, :description ]
+  searchkick word_middle: [ :name, :description ],
+    callbacks: false
 
   enum :status, { available: 0, unavailable: 1, sold_out: 2 }
 
@@ -33,5 +34,9 @@ class MenuItem < ApplicationRecord
 
   def invalidate_cache
     Rails.cache.delete("menu_items:#{restaurant_id}:v1")
+  end
+
+  def enqueue_reindex
+    ReindexMenuItemJob.perform_later(id)
   end
 end
