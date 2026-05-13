@@ -3,7 +3,7 @@ class Api::V1::MenuItemsController < ApplicationController
   before_action :set_menu_item, only: [ :show, :update, :destroy ]
 
   def index
-    @menu_items = @menu.menu_items.all
+    @menu_items = MenuItem.cached_for(params[:menu_id])
 
     render json: MenuItemBlueprint.render(@menu_items)
   end

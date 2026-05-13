@@ -1,7 +1,10 @@
 class Api::V1::MenusController < ApplicationController
+  include Cacheable
+
   before_action :set_menu, only: [ :show, :update, :destroy ]
+
   def index
-    @menus = Menu.includes(:menu_items).all
+    @menus = Menu.cached_for(current_restaurant.id)
 
     render json: MenuBlueprint.render(@menus, view: :with_items)
   end

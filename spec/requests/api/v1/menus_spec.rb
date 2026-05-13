@@ -80,4 +80,27 @@ RSpec.describe "Api::V1::Menus", type: :request do
       expect(response).to have_http_status(:no_content)
     end
   end
+
+  describe "Caching" do
+    it "caches menu list and invalidates on create" do
+      create_list(:menu, 2, restaurant: restaurant)
+
+      get "/api/v1/menus", headers: headers
+
+      expect(response).to have_http_status(:ok)
+
+      expect(json.length).to eq(2)
+
+      post "/api/v1/menus",
+        params: { menu: { name: "Menu Baru", position: 3, status: "active" } },
+        headers: headers,
+        as: :json
+
+      expect(response).to have_http_status(:created)
+
+      get "/api/v1/menus", headers: headers
+
+      expect(json.length).to eq(3)
+    end
+  end
 end

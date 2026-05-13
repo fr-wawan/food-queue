@@ -7,6 +7,10 @@ class ApplicationController < ActionController::API
 
   private
 
+  def current_restaurant
+    ActsAsTenant.current_tenant
+  end
+
   def unauthorized(e)
     render json: { error: e.message }, status: :unauthorized
   end

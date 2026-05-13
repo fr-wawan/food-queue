@@ -8,4 +8,18 @@ class Menu < ApplicationRecord
   validates :position, numericality: { greater_than_or_equal_to: 0 }
 
   default_scope { order(:position) }
+
+  after_commit :invalidate_cache
+
+  def self.cached_for(restaurant_id)
+    Rails.cache.fetch("menus:#{restaurant_id}:v1", expires_in: 10.minutes) do
+      includes(:menu_items).all.to_a
+    end
+  end
+
+  private
+
+  def invalidate_cache
+    Rails.cache.delete("menus:#{restaurant_id}:v1")
+  end
 end
