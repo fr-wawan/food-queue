@@ -8,6 +8,32 @@ class Api::V1::MenuItemsController < ApplicationController
     render json: MenuItemBlueprint.render(@menu_items)
   end
 
+  def search
+    query = params[:q].presence || "*"
+    page = (params[:page] || 1).to_i
+    per_page = (params[:per_page] || 20).to_i
+
+    filters = { status: "available" }
+    filters[:menu_id] = params[:menu_id] if params[:menu_id].present?
+
+    @menu_items = MenuItem.search(
+      query,
+      where: filters,
+      order: { name: :asc },
+      page: params[:page] || 1,
+      per_page: params[:per_page] || 20
+    )
+
+    render json: {
+      data: MenuItemBlueprint.render_as_hash(@menu_items.to_a),
+      meta: {
+        total: @menu_items.total_count,
+        page: page,
+        per_page: per_page
+      }
+    }
+  end
+
   def show
     render json: MenuItemBlueprint.render(@menu_item)
   end

@@ -21,6 +21,43 @@ RSpec.describe "Api::V1::MenuItems", type: :request do
     end
   end
 
+  describe "GET /api/v1/menu_items/search" do
+    before do
+      create(:menu_item, menu: menu, restaurant: restaurant, name: "Nasi Goreng", status: :available)
+      create(:menu_item, menu: menu, restaurant: restaurant, name: "Mie Goreng",  status: :available)
+      create(:menu_item, menu: menu, restaurant: restaurant, name: "Es Teh",      status: :unavailable)
+      MenuItem.reindex
+      MenuItem.searchkick_index.refresh
+    end
+
+    it "returns matched menu items" do
+      get "/api/v1/menu_items/search?q=goreng", headers: headers
+
+      expect(response).to have_http_status(:ok)
+      expect(json["data"].length).to eq(2)
+    end
+
+    it "excludes unavailable items" do
+      get "/api/v1/menu_items/search?q=es+teh", headers: headers
+
+      expect(response).to have_http_status(:ok)
+      expect(json["data"].length).to eq(0)
+    end
+
+    it "returns all available when query blank" do
+      get "/api/v1/menu_items/search", headers: headers
+
+      expect(response).to have_http_status(:ok)
+      expect(json["data"].length).to eq(2)
+    end
+
+    it "includes pagination meta" do
+      get "/api/v1/menu_items/search?q=goreng", headers: headers
+
+      expect(json["meta"]).to include("total", "page", "per_page")
+    end
+  end
+
   describe "GET /api/v1/menu_items/:id" do
     let(:menu_item) { create(:menu_item, menu: menu, restaurant: restaurant) }
 

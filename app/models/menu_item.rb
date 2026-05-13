@@ -3,9 +3,21 @@ class MenuItem < ApplicationRecord
   belongs_to :restaurant
   belongs_to :menu
 
+  searchkick word_middle: [ :name, :description ]
+
   enum :status, { available: 0, unavailable: 1, sold_out: 2 }
 
   validates :name, presence: true
   validates :price, presence: true, numericality: { greater_than: 0 }
   validates :stock, numericality: { greater_than_or_equal_to: 0 }
+
+  def search_data
+    {
+      name: name,
+      description: description,
+      status: status,
+      restaurant_id: restaurant_id,
+      menu_id: menu_id
+    }
+  end
 end
