@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pundit/matchers'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 
@@ -31,6 +32,8 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.filter_rails_from_backtrace!
+
+  config.include Pundit::Matchers
 end
 
 Shoulda::Matchers.configure do |config|

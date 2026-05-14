@@ -3,12 +3,16 @@ class Api::V1::MenuItemsController < ApplicationController
   before_action :set_menu_item, only: [ :show, :update, :destroy ]
 
   def index
+    authorize MenuItem
+
     @menu_items = MenuItem.cached_for(params[:menu_id])
 
     render json: MenuItemBlueprint.render(@menu_items)
   end
 
   def search
+    authorize MenuItem, :search?
+
     query = params[:q].presence || "*"
     page = (params[:page] || 1).to_i
     per_page = (params[:per_page] || 20).to_i
@@ -35,11 +39,15 @@ class Api::V1::MenuItemsController < ApplicationController
   end
 
   def show
+    authorize @menu_item
+
     render json: MenuItemBlueprint.render(@menu_item)
   end
 
   def create
     @menu_item = @menu.menu_items.new(menu_item_params)
+
+    authorize @menu_item
 
     @menu_item.save!
 
@@ -47,12 +55,16 @@ class Api::V1::MenuItemsController < ApplicationController
   end
 
   def update
+    authorize @menu_item
+
     @menu_item.update!(menu_item_params)
 
     render json: MenuItemBlueprint.render(@menu_item)
   end
 
   def destroy
+    authorize @menu_item
+
     @menu_item.destroy!
 
     head :no_content

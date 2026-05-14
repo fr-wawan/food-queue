@@ -2,12 +2,16 @@ class Api::V1::OrdersController < ApplicationController
   before_action :set_order, only: [ :show, :update ]
 
   def index
+    authorize Order
+
     @orders = Order.includes(:order_items, :menu_items).all
 
     render json: OrderBlueprint.render(@orders, view: :with_items)
   end
 
   def show
+    authorize @order
+
     render json: OrderBlueprint.render(@order, view: :with_items)
   end
 
@@ -15,6 +19,8 @@ class Api::V1::OrdersController < ApplicationController
     @order = Order.new(order_params.except(:items))
 
     @order.user = current_user
+
+    authorize @order
 
     Order.transaction do
       @order.save!
@@ -31,6 +37,8 @@ class Api::V1::OrdersController < ApplicationController
   end
 
   def update
+    authorize @order
+
     @order.update!(status: params[:status])
 
     render json: OrderBlueprint.render(@order)

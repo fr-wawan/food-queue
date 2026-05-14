@@ -43,6 +43,7 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop-rails-omakase", require: false
   gem "shoulda-matchers"
+  gem "pundit-matchers"
 end
 
 group :development do
