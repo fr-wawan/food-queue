@@ -7,7 +7,7 @@
 [![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.13-005571?style=flat-square&logo=elasticsearch&logoColor=white)](https://www.elastic.co/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-A multi-tenant REST API for restaurant order management. One Rails instance serves multiple restaurants simultaneously, each isolated by subdomain — built as a learning project mirroring the HungryHub production stack.
+A multi-tenant REST API for restaurant order management. One Rails instance serves multiple restaurants simultaneously, each isolated by subdomain
 
 ## Table of Contents
 
